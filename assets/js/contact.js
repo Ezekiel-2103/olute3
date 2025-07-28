@@ -1,11 +1,6 @@
-// Simple form validation & feedback
-const form = document.getElementById("contact-form");
-const formMessage = document.getElementById("form-message");
-
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  // Validate fields
   const fname = form.fname.value.trim();
   const lname = form.lname.value.trim();
   const email = form.email.value.trim();
@@ -28,20 +23,32 @@ form.addEventListener("submit", (e) => {
     return;
   }
 
-  // Simulate sending message
   showMessage("Sending message...", "success");
-  setTimeout(() => {
-    form.reset();
-    showMessage("Thank you! Your message has been sent.", "success");
-  }, 1500);
+
+  // Send data using fetch()
+  try {
+    const response = await fetch("contact.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        name: `${fname} ${lname}`,
+        email: email,
+        message: message,
+      }),
+    });
+
+    const result = await response.text();
+
+    if (result.trim() === "OK" || response.ok) {
+      form.reset();
+      showMessage("Thank you! Your message has been sent.", "success");
+    } else {
+      showMessage("There was an error sending your message. Try again later.", "error");
+    }
+  } catch (error) {
+    console.error("Error sending form:", error);
+    showMessage("Something went wrong. Please try again.", "error");
+  }
 });
-
-function showMessage(msg, type) {
-  formMessage.textContent = msg;
-  formMessage.className = "form-message " + type;
-}
-
-function validateEmail(email) {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email.toLowerCase());
-}
