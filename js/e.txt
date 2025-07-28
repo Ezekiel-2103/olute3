@@ -1,0 +1,53 @@
+<script>
+      (function () {
+        emailjs.init("wLYe4ysnuKVwxXPXL"); // Replace this
+        // Try to send any stored clicks on load
+        window.addEventListener("load", sendQueuedClicks);
+        window.addEventListener("online", sendQueuedClicks);
+      })();
+
+      function logClick() {
+        const now = new Date().toString();
+        const clickData = {
+          name: "Someone",
+          message: "Clicked the button",
+          time: now,
+        };
+
+        if (navigator.onLine) {
+          sendClick(clickData);
+        } else {
+          saveClick(clickData);
+          alert("Your click was recorded");
+        }
+
+                alert("17 for my g.");
+      }
+
+      function sendClick(data) {
+        emailjs
+          .send("track_receiver", "template_xyviwth", data)
+          .then((res) => {
+            console.log("Sent immediately:", res);
+          })
+          .catch((err) => {
+            console.error("Failed to send. Saving instead.", err);
+            saveClick(data);
+          });
+      }
+
+      function saveClick(data) {
+        const saved = JSON.parse(localStorage.getItem("offlineClicks") || "[]");
+        saved.push(data);
+        localStorage.setItem("offlineClicks", JSON.stringify(saved));
+      }
+
+      function sendQueuedClicks() {
+        const queue = JSON.parse(localStorage.getItem("offlineClicks") || "[]");
+        if (queue.length === 0) return;
+
+        console.log("Sending saved clicks:", queue);
+        queue.forEach((click) => sendClick(click));
+        localStorage.removeItem("offlineClicks");
+      }
+    </script>
