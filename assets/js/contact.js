@@ -44,11 +44,14 @@ form.addEventListener("submit", async (e) => {
     if (result.trim() === "OK" || response.ok) {
       form.reset();
       showMessage("Thank you! Your message has been sent.", "success");
+      alert("Thank you! Your message has been sent.");
     } else {
       showMessage("There was an error sending your message. Try again later.", "error");
+      alert("There was an error sending your message. Try again later.");
     }
   } catch (error) {
     console.error("Error sending form:", error);
     showMessage("Something went wrong. Please try again.", "error");
+    alert("Something went wrong. Please try again.");
   }
 });
