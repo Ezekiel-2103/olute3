@@ -27,7 +27,7 @@ form.addEventListener("submit", async (e) => {
 
   // Send data using fetch()
   try {
-    const response = await fetch("contact.php", {
+    const response = await fetch("C:\\Users\\user\\OneDrive\\Desktop\\oluteAss\\forms\\contact.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
