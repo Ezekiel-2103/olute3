@@ -48,7 +48,7 @@
 // $contact->from_email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
 // <?php
 // Set your email address
-$to = "olutefc@gmail.com";
+$to = "ezekielib198@gmail.com";
 
 // Get and sanitize input
 $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
